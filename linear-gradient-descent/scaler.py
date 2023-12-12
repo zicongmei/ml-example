@@ -59,7 +59,7 @@ def gradient_descent(x, y, w_in, b_in, alpha, num_iters, cost_function, gradient
 w_init = 0
 b_init = 0
 # some gradient descent settings
-iterations = 1000
+iterations = 10
 tmp_alpha = 0.1
 # run gradient descent
 w_final, b_final, J_hist, p_hist = gradient_descent(x_train ,y_train, w_init, b_init, tmp_alpha,
