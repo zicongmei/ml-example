@@ -43,6 +43,7 @@ def plot_random_X(X,y):
     size = 64
     X_out = np.empty([size,X.shape[1]])
     y_out = np.empty([size,y.shape[1]])
+    m,n=X.shape
     for i in range(size):
         # Select random indices
         random_index = np.random.randint(m)
