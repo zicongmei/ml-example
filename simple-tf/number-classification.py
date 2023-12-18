@@ -21,71 +21,74 @@ data = scipy.io.loadmat(data_local)
 X_all=data['X']
 y_all=data['y']
 
-X_array=[]
-y_array=[]
-for i in range(len(X_all)):
-    if y_all[i] == 1 or y_all[i] == 0:
-        X_array.append(X_all[i])
-        y_array.append(y_all[i])
-
-X=np.empty([len(y_array), X.shape[1]])
-y=np.empty([len(y_array),1])
-
-for i in range(len(X_array)):
-    if y_all[i] == 1 or y_all[i] == 0:
-        X[i] = (X_array[i])
-        y[i] = (y_array[i])
-
-
-
 # print ('The first element of X is: ', X[0])
-print ('The shape of X is: ' + str(X.shape))
-print ('The shape of y is: ' + str(y.shape))
+print ('The shape of X is: ' + str(X_all.shape))
+print ('The shape of y is: ' + str(y_all.shape))
 
 
-def plot_X(X):
+def plot_X(X,y):
     m, n = X.shape
-
     fig, axes = plt.subplots(8,8, figsize=(8,8))
     fig.tight_layout(pad=0.1)
-
     for i,ax in enumerate(axes.flat):
-        # Select random indices
-        random_index = np.random.randint(m)
-        
-        # Select rows corresponding to the random indices and
-        # reshape the image
-        X_random_reshaped = X[random_index].reshape((20,20)).T
-        
+        X_random_reshaped = X[i].reshape((20,20)).T
         # Display the image
         ax.imshow(X_random_reshaped, cmap='gray')
-        
         # Display the label above the image
-        ax.set_title(y[random_index,0])
+        ax.set_title(round(y[i,0],2))
         ax.set_axis_off()
     plt.show()
 
-# plot_X(X)
+def plot_random_X(X,y):
+    size = 64
+    X_out = np.empty([size,X.shape[1]])
+    y_out = np.empty([size,y.shape[1]])
+    for i in range(size):
+        # Select random indices
+        random_index = np.random.randint(m)
+        X_out[i] = X[random_index]
+        y_out[i] = y[random_index]
+    plot_X(X_out,y_out)        
 
-model = Sequential(
-    [               
-        tf.keras.Input(shape=(400,)),    #specify input size
-        ### START CODE HERE ### 
-        Dense(25, activation="sigmoid", name="layer1"),
-        Dense(15, activation="sigmoid", name="layer2"),
-        Dense(1, activation="sigmoid", name="layer3"),
-        
-        ### END CODE HERE ### 
-    ], name = "my_model" 
-)                            
-model.summary()
+# plot_random_X(X_all, y_all)
 
-model.compile(
-    loss=tf.keras.losses.BinaryCrossentropy(),
-    optimizer=tf.keras.optimizers.Adam(0.001),
-)
 
-model.fit(
-    X,y,
-    epochs=20
-)
+def identify_one_digit(X_all, y_all, target):
+    X=X_all
+    y=y_all.copy()
+    for i in range(y.shape[0]):
+        if y[i][0] == target:
+            y[i][0] = 1
+        else:
+            y[i][0] = 0
+    # plot_X(X, y)
+    # break
+    model = Sequential(
+        [               
+            tf.keras.Input(shape=(400,)),    #specify input size
+            ### START CODE HERE ### 
+            Dense(25, activation="sigmoid", name="layer1"),
+            Dense(15, activation="sigmoid", name="layer2"),
+            Dense(1, activation="sigmoid", name="layer3"),
+            
+            ### END CODE HERE ### 
+        ], name = "my_model" 
+    )                            
+    model.summary()
+    model.compile(
+        loss=tf.keras.losses.BinaryCrossentropy(),
+        optimizer=tf.keras.optimizers.Adam(0.001),
+    )
+    model.fit(
+        X,y,
+        epochs=20
+    )
+    result = model.predict(X)
+    # for i in range(result.shape[0]):
+    #     if result[i][0] < 0.5:
+    #         result[i][0] = 0
+    #     else:
+    #         result[i][0] = 1
+    plot_random_X(X_all,result)
+
+identify_one_digit(X_all, y_all, 3)
