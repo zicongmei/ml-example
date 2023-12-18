@@ -66,7 +66,7 @@ def identify_one_digit(X_all, y_all, target):
     # break
     model = Sequential(
         [               
-            tf.keras.Input(shape=(400,)),    #specify input size
+            tf.keras.Input(shape=(X.shape[1],)),    #specify input size
             ### START CODE HERE ### 
             Dense(25, activation="sigmoid", name="layer1"),
             Dense(15, activation="sigmoid", name="layer2"),
@@ -93,3 +93,5 @@ def identify_one_digit(X_all, y_all, target):
     plot_random_X(X_all,result)
 
 identify_one_digit(X_all, y_all, 3)
+identify_one_digit(X_all, y_all, 6)
+
