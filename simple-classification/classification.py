@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import copy
 import math
 
-
 print("starting")
 
 # load dataset
