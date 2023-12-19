@@ -67,12 +67,9 @@ def identify_one_digit(X_all, y_all, target):
     model = Sequential(
         [               
             tf.keras.Input(shape=(X.shape[1],)),    #specify input size
-            ### START CODE HERE ### 
             Dense(25, activation="sigmoid", name="layer1"),
             Dense(15, activation="sigmoid", name="layer2"),
             Dense(1, activation="sigmoid", name="layer3"),
-            
-            ### END CODE HERE ### 
         ], name = "my_model" 
     )                            
     model.summary()

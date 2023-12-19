@@ -58,7 +58,6 @@ model = Sequential(
         Dense(25, activation="relu", name="layer1"),
         Dense(15, activation="relu", name="layer2"),
         Dense(10, activation="linear", name="layer3"),
-        
     ], name = "my_model" 
 )                            
 model.summary()
