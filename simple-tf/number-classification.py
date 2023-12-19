@@ -7,49 +7,18 @@ import logging
 import scipy.io
 import urllib.request
 import warnings
+from number_classification_common import *
 
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 logging.getLogger("tensorflow").setLevel(logging.ERROR)
 tf.autograph.set_verbosity(0)
 
-data_url='https://raw.githubusercontent.com/kaleko/CourseraML/master/ex3/data/ex3data1.mat'
-data_local = "/tmp/ex3data1.mat"
-urllib.request.urlretrieve(data_url, data_local)
-
-data = scipy.io.loadmat(data_local)
-X_all=data['X']
-y_all=data['y']
+X_all, y_all = load_data()
 
 # print ('The first element of X is: ', X[0])
 print ('The shape of X is: ' + str(X_all.shape))
 print ('The shape of y is: ' + str(y_all.shape))
-
-
-def plot_X(X,y):
-    m, n = X.shape
-    fig, axes = plt.subplots(8,8, figsize=(8,8))
-    fig.tight_layout(pad=0.1)
-    for i,ax in enumerate(axes.flat):
-        X_random_reshaped = X[i].reshape((20,20)).T
-        # Display the image
-        ax.imshow(X_random_reshaped, cmap='gray')
-        # Display the label above the image
-        ax.set_title(round(y[i,0],2))
-        ax.set_axis_off()
-    plt.show()
-
-def plot_random_X(X,y):
-    size = 64
-    X_out = np.empty([size,X.shape[1]])
-    y_out = np.empty([size,y.shape[1]])
-    m,n=X.shape
-    for i in range(size):
-        # Select random indices
-        random_index = np.random.randint(m)
-        X_out[i] = X[random_index]
-        y_out[i] = y[random_index]
-    plot_X(X_out,y_out)        
 
 # plot_random_X(X_all, y_all)
 
