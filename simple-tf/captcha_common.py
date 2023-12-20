@@ -31,7 +31,8 @@ class generate_data():
         int_values = [x for x in byte_array]
         return int_values[54:]
 
-    def generate_random_once(self, c):
+    def generate_random_once(self, i):
+        print("generating data #", i)
         y = random.randint(0, 10**self.digit_size - 1)
         str_y = str(y)
         while len(str_y) < self.digit_size:
@@ -43,9 +44,9 @@ class generate_data():
         X = np.empty([data_size, image_size])
         y = np.empty([data_size, 1])
 
-        with multiprocessing.Pool(multiprocessing.cpu_count()) as pool:
-            result = pool.map(
-                self.generate_random_once, range(data_size))
+        pool = multiprocessing.Pool()
+        pool = multiprocessing.Pool(processes=multiprocessing.cpu_count())
+        result = pool.map(self.generate_random_once, range(data_size))
         for i in range(data_size):
             X[i], y[i][0] = result[i][0], result[i][1]
 

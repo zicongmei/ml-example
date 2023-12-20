@@ -26,7 +26,7 @@ def train(X, y, neurons, epochs):
 
         ], name="my_model"
     )
-    # model.summary()
+    model.summary()
     model.compile(
         loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
         optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
@@ -52,9 +52,9 @@ def calculate_error(model, X, y):
     return error * 1.0 / y.shape[0]
 
 
-X_train, y_train = generator.generate_all(10000, file_path='/tmp/train.mat')
-X_cv, y_cv = generator.generate_all(1000, file_path='/tmp/cv.mat')
-X_test, y_test = generator.generate_all(1000, file_path='/tmp/test.mat')
+X_train, y_train = generator.generate_all(1000, file_path='/tmp/train.mat')
+X_cv, y_cv = generator.generate_all(100, file_path='/tmp/cv.mat')
+X_test, y_test = generator.generate_all(100, file_path='/tmp/test.mat')
 
 # X_train, y_train = generator.load_data(file_path='/tmp/train.mat')
 # X_cv, y_cv = generator.load_data(file_path='/tmp/cv.mat')
