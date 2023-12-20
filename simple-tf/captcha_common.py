@@ -14,7 +14,7 @@ urllib.request.urlretrieve(ttf_url, ttf_local)
 image_dimension = [60, 160, 3]
 image_size = image_dimension[0] * image_dimension[1] * image_dimension[2]
 
-default_file_path = '/tmp/data1.mat'
+default_file_path = '/tmp/data1.npy'
 
 
 class generate_data():
@@ -54,18 +54,17 @@ class generate_data():
         #     print("generating data #", i)
         #     X[i], y[i][0] = self.generate_random_once()
 
-        mdic = {"X": X, "y": y, "label": "captcha"}
         if file_path is None:
             file_path = default_file_path
-        scipy.io.savemat(file_path, mdic)
+        np.save(file_path + '.X', X)
+        np.save(file_path + '.y', y)
         return X, y
 
     def load_data(self, file_path=None):
         if file_path is None:
             file_path = default_file_path
-        data = scipy.io.loadmat(file_path)
-        X = data['X']
-        y = data['y']
+        X = np.load(file_path + '.X')
+        y = np.load(file_path + '.y')
         return X, y
 
     def display(self, data, title=None):

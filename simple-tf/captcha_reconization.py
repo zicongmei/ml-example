@@ -52,13 +52,13 @@ def calculate_error(model, X, y):
     return error * 1.0 / y.shape[0]
 
 
-X_train, y_train = generator.generate_all(1000, file_path='/tmp/train.mat')
-X_cv, y_cv = generator.generate_all(100, file_path='/tmp/cv.mat')
-X_test, y_test = generator.generate_all(100, file_path='/tmp/test.mat')
+X_train, y_train = generator.generate_all(30000, file_path='/tmp/train.npy')
+X_cv, y_cv = generator.generate_all(1000, file_path='/tmp/cv.npy')
+X_test, y_test = generator.generate_all(1000, file_path='/tmp/test.npy')
 
-# X_train, y_train = generator.load_data(file_path='/tmp/train.mat')
-# X_cv, y_cv = generator.load_data(file_path='/tmp/cv.mat')
-# X_test, y_test = generator.load_data(file_path='/tmp/test.mat')
+# X_train, y_train = generator.load_data(file_path='/tmp/train.npy')
+# X_cv, y_cv = generator.load_data(file_path='/tmp/cv.npy')
+# X_test, y_test = generator.load_data(file_path='/tmp/test.npy')
 
 
 def evaluate_model(neurons, epochs):
