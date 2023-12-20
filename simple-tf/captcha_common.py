@@ -3,9 +3,8 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import urllib.request
 import numpy as np
-from multiprocessing import Pool
+import multiprocessing
 import random
-from multiprocessing import Pool
 import scipy.io
 
 ttf_url = 'https://raw.githubusercontent.com/lepture/captcha/master/src/captcha/data/DroidSansMono.ttf'
@@ -44,7 +43,7 @@ class generate_data():
         X = np.empty([data_size, image_size])
         y = np.empty([data_size, 1])
 
-        with Pool() as pool:
+        with multiprocessing.Pool(multiprocessing.cpu_count()) as pool:
             result = pool.map(
                 self.generate_random_once, range(data_size))
         for i in range(data_size):
