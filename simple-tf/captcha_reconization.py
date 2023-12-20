@@ -8,27 +8,12 @@ import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 
-generator = generate_data()
+
+digit_size = 1
+generator = generate_data(digit_size)
 
 # data = generator.generate('12')
 # generator.display(data)
-
-
-digit_size = 1
-
-
-def generate_data(data_size):
-    X = np.empty([data_size, 60*160*3])
-    y = np.empty([data_size, 1])
-
-    for i in range(data_size):
-        print("generating data #", i)
-        y[i][0] = random.randint(0, 10**digit_size - 1)
-        str_y = str(y)
-        if len(str_y) == 1:
-            str_y = '0' + str_y
-        X[i] = generator.generate('12')
-    return X, y
 
 
 def train(X, y, neurons, epochs):
@@ -57,23 +42,23 @@ def calculate_error(model, X, y):
     prediction = model.predict(X)
 
     error = 0
-    err_X = np.zeros([64, X.shape[1]])
-    err_y = np.zeros([64, y.shape[1]])
     for i in range(y.shape[0]):
         yhat = np.argmax(prediction[i])
         if yhat != y[i][0]:
-            if error < 64:
-                err_X[error] = X[i]
-                err_y[error][0] = yhat
             error += 1
+            # generator.display(X[i], 'want {}; got {}, perdition {}'.format(
+            #     y[i][0], yhat, prediction[i]))
 
-    # plot_X(err_X, err_y)
     return error * 1.0 / y.shape[0]
 
 
-X_train, y_train = generate_data(10000)
-X_cv, y_cv = generate_data(1000)
-X_test, y_test = generate_data(1000)
+X_train, y_train = generator.generate_all(10000, file_path='/tmp/train.mat')
+X_cv, y_cv = generator.generate_all(1000, file_path='/tmp/cv.mat')
+X_test, y_test = generator.generate_all(1000, file_path='/tmp/test.mat')
+
+# X_train, y_train = generator.load_data(file_path='/tmp/train.mat')
+# X_cv, y_cv = generator.load_data(file_path='/tmp/cv.mat')
+# X_test, y_test = generator.load_data(file_path='/tmp/test.mat')
 
 
 def evaluate_model(neurons, epochs):
@@ -87,5 +72,5 @@ def evaluate_model(neurons, epochs):
 
 # evaluate_model([35,20],20)
 # evaluate_model([25,15],40)
-evaluate_model([25, 15], 20)
+evaluate_model([25, 15], 3)
 # evaluate_model([15,10],20)
